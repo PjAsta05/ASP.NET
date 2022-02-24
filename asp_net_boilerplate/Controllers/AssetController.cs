@@ -14,16 +14,20 @@ namespace asp_net_boilerplate.Controllers
         public string entity_id_global = "wk0008";
 
         AssetDataCenter assetDataCenter = new AssetDataCenter();
+        FunctionalDataCenter functionalDataCenter = new FunctionalDataCenter();
 
         // GET: Asset
         public ActionResult Index()
         {
             AssetModel assetModel = new AssetModel();
 
-            assetModel.tag_number_list = assetDataCenter.getTagNumberList(entity_id_global);
+            assetModel.tag_number_list = functionalDataCenter.getTagNumberList(entity_id_global);
+            assetModel.cat_list = functionalDataCenter.getCatList(entity_id_global);
+            assetModel.object_type_list = functionalDataCenter.getObjectTypeList(entity_id_global);
 
             return View(assetModel);
         }
+
         public JsonResult Get(int equipment)
         {
             var jsonResult = Json(assetDataCenter.getAsset(equipment, entity_id_global), JsonRequestBehavior.AllowGet);

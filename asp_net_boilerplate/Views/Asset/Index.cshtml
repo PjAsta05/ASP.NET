@@ -1,13 +1,13 @@
 ﻿@model asp_net_boilerplate.Models.AssetModel
 @{
     ViewBag.Title = "Home Page";
-    int no = 1;
 }
 
 @section page_style
 {
     <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="~/Content/autoComplete-vanilla/auto-complete.css" rel="stylesheet" />
 }
 
@@ -17,7 +17,7 @@
     <div class="col-md-6">
         <form action="#" id="filterData" method="get">
             <label for="tag_number">Search : </label>
-            <input type="text" name="tag_number" id="tag_number" placeholder="Input by Tag Number" />
+            <input type="text" name="tag_number_filter" id="tag_number_filter" placeholder="Input by Tag Number" />
             <input type="submit" value="Search" />
         </form>
     </div>
@@ -35,6 +35,7 @@
                         <th>Description</th>
                         <th>Category</th>
                         <th>Object Type</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
             </table>
@@ -42,10 +43,14 @@
     </div>
 </div>
 
+@Html.Partial("~/Views/Asset/Modal.cshtml", Model)
+
 @section scripts
 {
     <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="~/Content/autoComplete-vanilla/auto-complete.min.js"></script>
 
     @Html.Partial("~/Views/Asset/Scripts.cshtml", Model.tag_number_list)

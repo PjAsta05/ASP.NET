@@ -1,0 +1,58 @@
+﻿@model asp_net_boilerplate.Models.AssetModel
+
+<div class="modal" id="dataModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="saveForm" action="#" method="POST">
+            <input type="reset" id="reset" name="reset" required style="display: none;" />
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5><strong>Add / Edit Data</strong></h5>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped">
+                        <tr>
+                            <td>Equipment Number</td>
+                            <td><input type="number" id="equipment" name="equipment" required style="width: 100%;" /></td>
+                        </tr>
+                        <tr>
+                            <td>Tag Number</td>
+                            <td><input type="text" id="tag_number" name="tag_number" required style="width: 100%;" /></td>
+                        </tr>
+                        <tr>
+                            <td>Description</td>
+                            <td><input type="text" id="description" name="description" required style="width: 100%;" /></td>
+                        </tr>
+                        <tr>
+                            <td>Category</td>
+                            <td>
+                                <select id="cat" name="cat" required style="width: 100%;">
+                                    <option value="" selected disabled>-- Select Category --</option>
+                                    @foreach (var item in Model.cat_list)
+                                    {
+                                        <option value="@item.cat">@item.cat</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Object Type</td>
+                            <td>
+                                <select id="object_type" name="object_type" required style="width: 100%;">
+                                    <option value="" selected disabled>-- Select Object Type --</option>
+                                    @foreach (var item in Model.object_type_list)
+                                    {
+                                        <option value="@item.object_type">@item.object_type</option>
+                                    }
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

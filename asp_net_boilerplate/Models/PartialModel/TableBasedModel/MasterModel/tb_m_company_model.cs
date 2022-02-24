@@ -12,5 +12,6 @@ namespace asp_net_boilerplate.Models
         public string entity_id { get; set; }
         public string company_code { get; set; }
         public string description { get; set; }
+        public string action { get; set; }
     }
 }

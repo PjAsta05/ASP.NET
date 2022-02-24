@@ -4,6 +4,8 @@
     $(document).ready(function () {
         loadAutoComplete();
         reloadTable();
+        $("#cat").select2();
+        $("#object_type").select2();
     });
 
     function reloadTable() {
@@ -19,7 +21,7 @@
             "ajax": {
                 "url": "/Asset/List",
                 "type": "POST",
-                "data": { "tag_number": $("#tag_number").val() },
+                "data": { "tag_number": $("#tag_number_filter").val() },
                 "datatype": "json"
             },
             "columns": [
@@ -32,12 +34,18 @@
                 { "data": "tag_number", "name": "Tag Number", "autoWidth": true },
                 { "data": "description", "name": "Description", "autoWidth": true },
                 { "data": "cat", "name": "Category", "autoWidth": true },
-                { "data": "object_type", "name": "Object Type", "autoWidth": true }
+                { "data": "object_type", "name": "Object Type", "autoWidth": true },
+                { "data": "action", "name": "action", "autoWidth": true }
             ]
         });
     }
 
     $("#filterData").submit(function (e) {
+        e.preventDefault();
+        reloadTable();
+    });
+
+    $("#saveForm").submit(function (e) {
         e.preventDefault();
         reloadTable();
     });
@@ -50,7 +58,7 @@
         }
 
         new autoComplete({
-            selector: 'input[name="tag_number"]',
+            selector: 'input[name="tag_number_filter"]',
             minChars: 2,
             source: function (term, suggest) {
                 term = term.toLowerCase();
@@ -62,4 +70,66 @@
             }
         });
     }
+
+    function AddData() {
+        $("#reset").trigger("click");
+        $("#dataModal").modal("show");
+    }
+
+    function EditData(equipment) {
+        $.ajax({
+            type: 'GET',
+            url: '/Asset/Get',
+            data: { equipment: equipment},
+            success: function (data) {
+                $("#equipment").val(data.equipment);
+                $("#tag_number").val(data.tag_number);
+                $("#description").val(data.description);
+                $("#cat").val(data.cat);
+                $("#object_type").val(data.object_type);
+                $("#dataModal").modal("show");
+            }
+        });
+    }
+
+    $("#saveForm").submit(function (e) {
+        e.preventDefault();
+
+        var formData = $(this).serialize();
+
+        swal({
+            title: "Save data?",
+            text: "Are you sure want to save data?",
+            buttons: {
+                save: {
+                    text: "Save!",
+                    value: "save",
+                },
+                cancel: "No, Cancel",
+            },
+        }).then(function (value) {
+            switch (value) {
+                case "save":
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Asset/Store',
+                        data: formData,
+                        success: function (data) {
+                            if (data == "success") {
+                                $("#dataModal").modal("hide");
+                                swal("Success!", "Save data sucessfully!", "success");
+                                reloadTable();
+                            } else if (data == "failed") {
+                                swal("Error!", "Failed to save data!", "error");
+                            } else {
+                                swal("Error!", "Failed to save with error code : " + data.status, "error");
+                            }
+                        }
+                    });
+                    break;
+                default:
+                    swal("Cancelled!", "You cancelled to save this data!", "success");
+            }
+        });
+    })
 </script>

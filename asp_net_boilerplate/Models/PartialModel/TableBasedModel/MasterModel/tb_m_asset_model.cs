@@ -14,6 +14,7 @@ namespace asp_net_boilerplate.Models
         public string description { get; set; }
         public string cat { get; set; }
         public string object_type { get; set; }
+        public string action { get; set; }
 
         [Key]
         public string entity_id { get; set; }

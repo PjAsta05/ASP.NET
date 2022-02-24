@@ -43,6 +43,9 @@ namespace asp_net_boilerplate.DataCenter
 						tb_m_asset.cat = rdr["cat"].ToString();
 						tb_m_asset.object_type = rdr["object_type"].ToString();
 						tb_m_asset.entity_id = rdr["entity_id"].ToString();
+						tb_m_asset.action =
+							"<button type='button' onclick='EditData(" + ((int)rdr["equipment"]).ToString() + ")'>Edit</a>" +
+							"<button type='button' onclick='DeleteData(" + ((int)rdr["equipment"]).ToString() + ")'>Delete</a>";
 
 						tb_m_asset_list.Add(tb_m_asset);
 					}
@@ -83,36 +86,6 @@ namespace asp_net_boilerplate.DataCenter
 			}
 
 			return tb_m_asset;
-		}
-
-		public List<tag_number_model> getTagNumberList(string entity_id)
-		{
-			string connectionString = ConfigurationManager.ConnectionStrings["koneksi"].ConnectionString;
-
-			var sql = "SELECT tag_number FROM TB_M_ASSET WHERE entity_id = @entity_id";
-
-			List<tag_number_model> tag_number_list = new List<tag_number_model>();
-
-			using (SqlConnection con = new SqlConnection(connectionString))
-			{
-				using (SqlCommand cmd = new SqlCommand(sql, con))
-				{
-					con.Open();
-					cmd.Parameters.Add("@entity_id", SqlDbType.NVarChar).Value = entity_id;
-					SqlDataReader rdr = cmd.ExecuteReader();
-					while (rdr.Read())
-					{
-						tag_number_model tag_number = new tag_number_model();
-
-						tag_number.tag_number = rdr["tag_number"].ToString();
-
-						tag_number_list.Add(tag_number);
-					}
-					con.Close();
-				}
-			}
-
-			return tag_number_list;
 		}
 
 		public string storeAsset(tb_m_asset_model tb_m_asset)
