@@ -1,0 +1,13 @@
+asp_net_boilerplate/bin/*
+asp_net_boilerplate/obj/*
+asp_net_boilerplate/Upload/*
+asp_net_boilerplate/Helpers/OpenConnection.cs
+.vs/asp_net_boilerplate/v14/.suo
+.vs/asp_net_boilerplate/v12/.suo
+.vs/asp_net_boilerplate/v16/.suo
+asp_net_boilerplate/Web.config
+asp_net_boilerplate/assets/image/svg/static/TEJ
+packages/*
+/config
+asp_net_boilerplate/asp_net_boilerplate.csproj
+.suo
