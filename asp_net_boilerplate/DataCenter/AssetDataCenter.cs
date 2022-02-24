@@ -138,11 +138,11 @@ namespace asp_net_boilerplate.DataCenter
                     using (SqlCommand cmd = new SqlCommand(query, cnn))
                     {
                         cmd.Parameters.Add("@equipment", SqlDbType.Int).Value = equipment;
-                        cmd.Parameters.Add("@entity_id", SqlDbType.Int).Value = entity_id;
-                        cmd.ExecuteNonQuery();
-                        status = "success";
-                    }
-                    cnn.Close();
+                        cmd.Parameters.Add("@entity_id", SqlDbType.NVarChar).Value = entity_id;
+						int deleteData = cmd.ExecuteNonQuery();
+						if (deleteData > 0) { status = "success"; } else { status = "failed"; }
+					}
+					cnn.Close();
                 }
                 catch (Exception ex)
                 {

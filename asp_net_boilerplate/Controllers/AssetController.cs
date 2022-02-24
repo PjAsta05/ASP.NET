@@ -64,7 +64,7 @@ namespace asp_net_boilerplate.Controllers
             return Content(status);
         }
 
-        [HttpDelete]
+        [HttpPost]
         public ActionResult Delete(int equipment)
         {
             string status = assetDataCenter.deleteAsset(equipment, entity_id_global);

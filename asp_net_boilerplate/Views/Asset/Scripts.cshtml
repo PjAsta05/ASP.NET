@@ -38,17 +38,7 @@
                 { "data": "action", "name": "action", "autoWidth": true }
             ]
         });
-    }
-
-    $("#filterData").submit(function (e) {
-        e.preventDefault();
-        reloadTable();
-    });
-
-    $("#saveForm").submit(function (e) {
-        e.preventDefault();
-        reloadTable();
-    });
+    };
 
     function loadAutoComplete() {
         var tagNumberList = [];
@@ -69,12 +59,12 @@
                 suggest(matches);
             }
         });
-    }
+    };
 
     function AddData() {
         $("#reset").trigger("click");
         $("#dataModal").modal("show");
-    }
+    };
 
     function EditData(equipment) {
         $.ajax({
@@ -90,7 +80,54 @@
                 $("#dataModal").modal("show");
             }
         });
-    }
+    };
+
+    function DeleteData(equipment) {
+        swal({
+            title: "Delete data?",
+            text: "Are you sure want to delete data?",
+            buttons: {
+                delete: {
+                    text: "Delete!",
+                    className: "btn-danger",
+                    value: "delete",
+                },
+                cancel: "No, Cancel",
+            },
+        }).then(function (value) {
+            switch (value) {
+                case "delete":
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Asset/Delete',
+                        data: { equipment: equipment },
+                        success: function (data) {
+                            if (data == "success") {
+                                swal("Success!", "Delete data sucessfully!", "success");
+                                reloadTable();
+                            } else if (data == "failed") {
+                                swal("Error!", "Failed to delete data!", "error");
+                            } else {
+                                swal("Error!", "Failed to delete with error code : " + data.status, "error");
+                            }
+                        }
+                    });
+                    break;
+                default:
+                    swal("Cancelled!", "You cancelled to delete this data!", "success");
+            }
+        });
+    };
+
+    $("#filterData").submit(function (e) {
+        e.preventDefault();
+        reloadTable();
+    });
+
+    $("#saveForm").submit(function (e) {
+        e.preventDefault();
+        reloadTable();
+    });
 
     $("#saveForm").submit(function (e) {
         e.preventDefault();
@@ -131,5 +168,5 @@
                     swal("Cancelled!", "You cancelled to save this data!", "success");
             }
         });
-    })
+    });
 </script>
