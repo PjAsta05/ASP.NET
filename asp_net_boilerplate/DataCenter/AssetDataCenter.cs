@@ -15,11 +15,11 @@ namespace asp_net_boilerplate.DataCenter
     public class AssetDataCenter : Controller
     {
 		// GET: AssetDataCenter
-		public List<tb_m_asset_model> getAssetList(string entity_id, string order_by = "equipment", int page = 1, int display_row = 10)
+		public List<tb_m_asset_model> getAssetList(string entity_id, int page = 1, int display_row = 10, string tag_number = "")
 		{
 			string connectionString = ConfigurationManager.ConnectionStrings["koneksi"].ConnectionString;
 
-			var sql = "EXEC S_ASSET_LOAD @entity_id, @order_by, @offset, @fetch";
+			var sql = "EXEC S_ASSET_LOAD @entity_id, @offset, @fetch, @tag_number";
 
 			List<tb_m_asset_model> tb_m_asset_list = new List<tb_m_asset_model>();
 
@@ -29,9 +29,9 @@ namespace asp_net_boilerplate.DataCenter
 				{
 					con.Open();
 					cmd.Parameters.Add("@entity_id", SqlDbType.NVarChar).Value = entity_id;
-					cmd.Parameters.Add("@order_by", SqlDbType.NVarChar).Value = order_by;
-					cmd.Parameters.Add("@offset", SqlDbType.NVarChar).Value = (page - 1) * display_row;
+					cmd.Parameters.Add("@offset", SqlDbType.NVarChar).Value = page;
 					cmd.Parameters.Add("@fetch", SqlDbType.NVarChar).Value = display_row;
+					cmd.Parameters.Add("@tag_number", SqlDbType.NVarChar).Value = tag_number;
 					SqlDataReader rdr = cmd.ExecuteReader();
 					while (rdr.Read())
 					{
@@ -41,7 +41,7 @@ namespace asp_net_boilerplate.DataCenter
 						tb_m_asset.tag_number = rdr["tag_number"].ToString();
 						tb_m_asset.description = rdr["description"].ToString();
 						tb_m_asset.cat = rdr["cat"].ToString();
-						tb_m_asset.object_type = rdr["cat"].ToString();
+						tb_m_asset.object_type = rdr["object_type"].ToString();
 						tb_m_asset.entity_id = rdr["entity_id"].ToString();
 
 						tb_m_asset_list.Add(tb_m_asset);
@@ -75,7 +75,7 @@ namespace asp_net_boilerplate.DataCenter
 						tb_m_asset.tag_number = rdr["tag_number"].ToString();
 						tb_m_asset.description = rdr["description"].ToString();
 						tb_m_asset.cat = rdr["cat"].ToString();
-						tb_m_asset.object_type = rdr["cat"].ToString();
+						tb_m_asset.object_type = rdr["object_type"].ToString();
 						tb_m_asset.entity_id = rdr["entity_id"].ToString();
 					}
 					con.Close();
@@ -83,6 +83,36 @@ namespace asp_net_boilerplate.DataCenter
 			}
 
 			return tb_m_asset;
+		}
+
+		public List<tag_number_model> getTagNumberList(string entity_id)
+		{
+			string connectionString = ConfigurationManager.ConnectionStrings["koneksi"].ConnectionString;
+
+			var sql = "SELECT tag_number FROM TB_M_ASSET WHERE entity_id = @entity_id";
+
+			List<tag_number_model> tag_number_list = new List<tag_number_model>();
+
+			using (SqlConnection con = new SqlConnection(connectionString))
+			{
+				using (SqlCommand cmd = new SqlCommand(sql, con))
+				{
+					con.Open();
+					cmd.Parameters.Add("@entity_id", SqlDbType.NVarChar).Value = entity_id;
+					SqlDataReader rdr = cmd.ExecuteReader();
+					while (rdr.Read())
+					{
+						tag_number_model tag_number = new tag_number_model();
+
+						tag_number.tag_number = rdr["tag_number"].ToString();
+
+						tag_number_list.Add(tag_number);
+					}
+					con.Close();
+				}
+			}
+
+			return tag_number_list;
 		}
 
 		public string storeAsset(tb_m_asset_model tb_m_asset)

@@ -1,0 +1,65 @@
+﻿@model IEnumerable<asp_net_boilerplate.Models.tag_number_model>
+
+<script>
+    $(document).ready(function () {
+        loadAutoComplete();
+        reloadTable();
+    });
+
+    function reloadTable() {
+        var table = $('#equipmentTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "bDestroy": true,
+            "filter": false,
+            "orderMulti": false,
+            "pageLength": 10,
+            "pagesToCache": 3,
+            "bInfo": false,
+            "ajax": {
+                "url": "/Asset/List",
+                "type": "POST",
+                "data": { "tag_number": $("#tag_number").val() },
+                "datatype": "json"
+            },
+            "columns": [
+                {
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                { "data": "equipment", "name": "Equipment Number", "autoWidth": true },
+                { "data": "tag_number", "name": "Tag Number", "autoWidth": true },
+                { "data": "description", "name": "Description", "autoWidth": true },
+                { "data": "cat", "name": "Category", "autoWidth": true },
+                { "data": "object_type", "name": "Object Type", "autoWidth": true }
+            ]
+        });
+    }
+
+    $("#filterData").submit(function (e) {
+        e.preventDefault();
+        reloadTable();
+    });
+
+    function loadAutoComplete() {
+        var tagNumberList = [];
+
+        @foreach (var ele in Model) {
+            @: tagNumberList.push('@ele.tag_number');
+        }
+
+        new autoComplete({
+            selector: 'input[name="tag_number"]',
+            minChars: 2,
+            source: function (term, suggest) {
+                term = term.toLowerCase();
+                var choices = tagNumberList;
+                var matches = [];
+                for (i = 0; i < choices.length; i++)
+                    if (~choices[i].toLowerCase().indexOf(term)) matches.push(choices[i]);
+                suggest(matches);
+            }
+        });
+    }
+</script>

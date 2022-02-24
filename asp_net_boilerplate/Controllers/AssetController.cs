@@ -20,20 +20,25 @@ namespace asp_net_boilerplate.Controllers
         {
             AssetModel assetModel = new AssetModel();
 
-            assetModel.tb_m_asset_list = assetDataCenter.getAssetList(entity_id_global);
+            assetModel.tag_number_list = assetDataCenter.getTagNumberList(entity_id_global);
 
             return View(assetModel);
         }
-        public JsonResult GetAsset(int equipment)
+        public JsonResult Get(int equipment)
         {
             var jsonResult = Json(assetDataCenter.getAsset(equipment, entity_id_global), JsonRequestBehavior.AllowGet);
             jsonResult.MaxJsonLength = int.MaxValue;
             return jsonResult;
         }
 
-        public JsonResult GetAssetList()
+        [HttpPost]
+        public ActionResult List()
         {
-            var jsonResult = Json(assetDataCenter.getAssetList(entity_id_global), JsonRequestBehavior.AllowGet);
+            int page = Int32.Parse(Request.Form.GetValues("start").FirstOrDefault());
+            int display_row = Int32.Parse(Request.Form.GetValues("length").FirstOrDefault());
+            string tag_number = Request.Form.GetValues("tag_number").FirstOrDefault();
+
+            var jsonResult = Json(new { data = assetDataCenter.getAssetList(entity_id_global, page, display_row, tag_number) }, JsonRequestBehavior.AllowGet);
             jsonResult.MaxJsonLength = int.MaxValue;
             return jsonResult;
         }
@@ -56,7 +61,7 @@ namespace asp_net_boilerplate.Controllers
         }
 
         [HttpDelete]
-        public ActionResult Store(int equipment)
+        public ActionResult Delete(int equipment)
         {
             string status = assetDataCenter.deleteAsset(equipment, entity_id_global);
 
