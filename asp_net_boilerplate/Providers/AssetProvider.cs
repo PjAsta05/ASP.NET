@@ -8,13 +8,13 @@ using System.Web;
 using System.Web.Mvc;
 
 using asp_net_boilerplate.Models;
-using asp_net_boilerplate.DataCenter;
+using asp_net_boilerplate.Provider;
 
-namespace asp_net_boilerplate.DataCenter
+namespace asp_net_boilerplate.Provider
 {
-    public class AssetDataCenter : Controller
+    public class AssetProvider : Controller
     {
-		// GET: AssetDataCenter
+		// GET: AssetProvider
 		public List<tb_m_asset_model> getAssetList(string entity_id, int page = 1, int display_row = 10, string tag_number = "")
 		{
 			string connectionString = ConfigurationManager.ConnectionStrings["koneksi"].ConnectionString;

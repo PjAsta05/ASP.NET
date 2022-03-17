@@ -8,13 +8,13 @@ using System.Web;
 using System.Web.Mvc;
 
 using asp_net_boilerplate.Models;
-using asp_net_boilerplate.DataCenter;
+using asp_net_boilerplate.Provider;
 
-namespace asp_net_boilerplate.DataCenter
+namespace asp_net_boilerplate.Provider
 {
-    public class FunctionalDataCenter : Controller
+    public class FunctionalProvider : Controller
     {
-		// GET: FunctionalDataCenter
+		// GET: FunctionalProvider
 
 		public List<tag_number_model> getTagNumberList(string entity_id)
 		{

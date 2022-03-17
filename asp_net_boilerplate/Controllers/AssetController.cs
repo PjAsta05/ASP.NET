@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 
 using asp_net_boilerplate.Models;
-using asp_net_boilerplate.DataCenter;
+using asp_net_boilerplate.Provider;
 
 namespace asp_net_boilerplate.Controllers
 {
@@ -13,24 +13,24 @@ namespace asp_net_boilerplate.Controllers
     {
         public string entity_id_global = "wk0008";
 
-        AssetDataCenter assetDataCenter = new AssetDataCenter();
-        FunctionalDataCenter functionalDataCenter = new FunctionalDataCenter();
+        AssetProvider assetProvider = new AssetProvider();
+        FunctionalProvider functionalProvider = new FunctionalProvider();
 
         // GET: Asset
         public ActionResult Index()
         {
             AssetModel assetModel = new AssetModel();
 
-            assetModel.tag_number_list = functionalDataCenter.getTagNumberList(entity_id_global);
-            assetModel.cat_list = functionalDataCenter.getCatList(entity_id_global);
-            assetModel.object_type_list = functionalDataCenter.getObjectTypeList(entity_id_global);
+            assetModel.tag_number_list = functionalProvider.getTagNumberList(entity_id_global);
+            assetModel.cat_list = functionalProvider.getCatList(entity_id_global);
+            assetModel.object_type_list = functionalProvider.getObjectTypeList(entity_id_global);
 
             return View(assetModel);
         }
 
         public JsonResult Get(int equipment)
         {
-            var jsonResult = Json(assetDataCenter.getAsset(equipment, entity_id_global), JsonRequestBehavior.AllowGet);
+            var jsonResult = Json(assetProvider.getAsset(equipment, entity_id_global), JsonRequestBehavior.AllowGet);
             jsonResult.MaxJsonLength = int.MaxValue;
             return jsonResult;
         }
@@ -42,7 +42,7 @@ namespace asp_net_boilerplate.Controllers
             int display_row = Int32.Parse(Request.Form.GetValues("length").FirstOrDefault());
             string tag_number = Request.Form.GetValues("tag_number").FirstOrDefault();
 
-            var jsonResult = Json(new { data = assetDataCenter.getAssetList(entity_id_global, page, display_row, tag_number) }, JsonRequestBehavior.AllowGet);
+            var jsonResult = Json(new { data = assetProvider.getAssetList(entity_id_global, page, display_row, tag_number) }, JsonRequestBehavior.AllowGet);
             jsonResult.MaxJsonLength = int.MaxValue;
             return jsonResult;
         }
@@ -59,7 +59,7 @@ namespace asp_net_boilerplate.Controllers
             tb_m_asset.object_type = Request["object_type"].ToString();
             tb_m_asset.entity_id = entity_id_global;
 
-            string status = assetDataCenter.storeAsset(tb_m_asset);
+            string status = assetProvider.storeAsset(tb_m_asset);
 
             return Content(status);
         }
@@ -67,7 +67,7 @@ namespace asp_net_boilerplate.Controllers
         [HttpPost]
         public ActionResult Delete(int equipment)
         {
-            string status = assetDataCenter.deleteAsset(equipment, entity_id_global);
+            string status = assetProvider.deleteAsset(equipment, entity_id_global);
 
             return Content(status);
         }
