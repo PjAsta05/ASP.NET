@@ -9,5 +9,4 @@ asp_net_boilerplate/Web.config
 asp_net_boilerplate/assets/image/svg/static/TEJ
 packages/*
 /config
-asp_net_boilerplate/asp_net_boilerplate.csproj
 .suo
