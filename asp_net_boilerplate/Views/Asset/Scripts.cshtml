@@ -63,6 +63,8 @@
 
     function AddData() {
         $("#reset").trigger("click");
+        $("#cat").trigger("change");
+        $("#object_type").trigger("change");
         $("#dataModal").modal("show");
     };
 
@@ -75,8 +77,8 @@
                 $("#equipment").val(data.equipment);
                 $("#tag_number").val(data.tag_number);
                 $("#description").val(data.description);
-                $("#cat").val(data.cat);
-                $("#object_type").val(data.object_type);
+                $("#cat").val(data.cat).trigger("change");
+                $("#object_type").val(data.object_type).trigger("change");
                 $("#dataModal").modal("show");
             }
         });

@@ -42,7 +42,7 @@ namespace asp_net_boilerplate.Controllers
             int display_row = Int32.Parse(Request.Form.GetValues("length").FirstOrDefault());
             string tag_number = Request.Form.GetValues("tag_number").FirstOrDefault();
 
-            var jsonResult = Json(new { data = assetProvider.getAssetList(entity_id_global, page, display_row, tag_number) }, JsonRequestBehavior.AllowGet);
+            var jsonResult = Json(new { data = assetProvider.getAssetList(entity_id_global, page, display_row, tag_number), recordsFiltered = assetProvider.getAssetList(entity_id_global, 0, int.MaxValue, tag_number).Count() }, JsonRequestBehavior.AllowGet);
             jsonResult.MaxJsonLength = int.MaxValue;
             return jsonResult;
         }
