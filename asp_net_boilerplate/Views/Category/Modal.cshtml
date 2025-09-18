@@ -1,0 +1,28 @@
+﻿<div class="modal" id="dataModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="saveForm" method="POST">
+            <input type="hidden" id="category_id" name="category_id" />
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5><strong id="modalTitle">Add / Edit Category</strong></h5>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped">
+                        <tr>
+                            <td>Name</td>
+                            <td><input type="text" id="name" name="name" required style="width:100%;" /></td>
+                        </tr>
+                        <tr>
+                            <td>Description</td>
+                            <td><textarea id="description" name="description" rows="3" required style="width:100%; font-size:16px;"></textarea></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

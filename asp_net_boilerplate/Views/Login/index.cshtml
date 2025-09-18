@@ -1,0 +1,63 @@
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4 col-xs-offset-0 col-sm-offset-2 col-md-offset-3 col-lg-offset-4" style="margin-top:10%;">
+            <div class="panel panel-default">
+                <div class="panel-heading text-center">
+                    <h2>My Bengkel</h2>
+                </div>
+                <div class="panel-body">
+
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger text-center">@ViewBag.Error</div>
+                    }
+
+                    <form class="form-horizontal" method="post" action="@Url.Action("Authenticate", "Login")">
+                        <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Username</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="username" placeholder="Masukkan username" required />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Password</label>
+                            <div class="col-sm-8">
+                                <input type="password" class="form-control" name="password" placeholder="Masukkan password" required />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <button type="submit" class="btn btn-primary btn-block">Login</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <script>
+            swal("Login Failed", "@ViewBag.ErrorMessage", "error");
+        </script>
+    }
+}

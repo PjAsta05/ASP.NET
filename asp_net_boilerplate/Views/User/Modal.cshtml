@@ -1,0 +1,44 @@
+﻿<div class="modal" id="dataModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="saveForm" method="POST">
+            <input type="hidden" id="user_id" name="user_id" />
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5><strong id="modalTitle">Add / Edit User</strong></h5>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped">
+                        <tr>
+                            <td>Username</td>
+                            <td><input type="text" id="username" name="username" required style="width:100%;" /></td>
+                        </tr>
+                        <tr>
+                            <td>Name</td>
+                            <td><input type="text" id="name" name="name" required style="width:100%;" /></td>
+                        </tr>
+                        <tr>
+                            <td>Description</td>
+                            <td><textarea id="description" name="description" rows="3" required style="width:100%; font-size:16px;"></textarea></td>
+                        </tr>
+                        <tr class="add-only">
+                            <td>Password</td>
+                            <td><input type="password" id="password" name="password" style="width:100%;" /></td>
+                        </tr>
+                        <tr class="add-only">
+                            <td>Confirm Password</td>
+                            <td><input type="password" id="confirm_password" name="confirm_password" style="width:100%;" /></td>
+                        </tr>
+                        <tr>
+                            <td>Allow Login</td>
+                            <td><input type="checkbox" id="is_allow_login" name="is_allow_login" /></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

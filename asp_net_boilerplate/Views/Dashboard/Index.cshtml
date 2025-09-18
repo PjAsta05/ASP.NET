@@ -1,0 +1,43 @@
+@{
+    ViewBag.Title = "Dashboard Master";
+}
+
+@section page_style
+{
+    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">Monthly Sales</div>
+    <div class="panel-body">
+        <canvas id="salesChart" height="100"></canvas>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Top 10 Sales by Customer</div>
+    <div class="panel-body">
+        <table class="table table-bordered table-striped" id="topCustomerTable">
+            <thead>
+                <tr class="info">
+                    <th>No</th>
+                    <th>Customer Name</th>
+                    <th>Total Sales</th>
+                    <th>Total Qty</th>
+                    <th>Grand Total</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+
+    @Html.Partial("~/Views/Dashboard/Scripts.cshtml")
+}
+

@@ -1,0 +1,122 @@
+﻿<script>
+    $(document).ready(function () {
+        initTable();
+    });
+
+    function initTable() {
+        var table = $('#categoryTable').DataTable({
+             "processing": true,
+             "serverSide": true,
+             "bDestroy": true,
+             "orderMulti": false,
+             "pageLength": 10,
+             "bInfo": true,
+             "lengthChange": true,
+             "searching": true,
+             "ajax": {
+                 "url": "@Url.Action("LoadCategory")",
+                 "type": "POST",
+             },
+             "columns": [
+                 { render: function (data, type, row, meta) { return meta.row + 1; }, orderable: false },
+                 { data: "name", orderable: false},
+                 { data: "description", orderable: false },
+                 { data: "action", orderable: false }
+             ],
+         });
+    };
+
+    function reloadTable() {
+        $('#categoryTable').DataTable().ajax.reload(null, false);
+    }
+
+    function ShowData(category_id){
+        $.get('@Url.Action("Get")', { category_id: category_id }, function(data){
+            var tbody = $('#detailTable tbody');
+            tbody.empty();
+
+            var index = 1;
+            for(var key in data){
+                if (key !== "category_id" && key !== "action") {
+                    let displayKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    tbody.append('<tr>' +
+                        '<td>' + displayKey + '</td>' +
+                        '<td>' + data[key] + '</td>' +
+                        '</tr>');
+                }
+            }
+
+            $('#showModal').modal('show');
+        });
+    }
+
+    function AddData() {
+        $('#modalTitle').text("Add Category");
+        $('#dataModal').modal('show');
+        $('#saveForm')[0].reset();
+        $('#category_id').val('');
+    }
+
+    function EditData(category_id) {
+        $.get('@Url.Action("Get")', { category_id: category_id }, function(data) {
+            $('#category_id').val(data.category_id);
+            $('#name').val(data.name);
+            $('#description').val(data.description);
+            $('#modalTitle').text("Edit Category");
+            $('#dataModal').modal('show');
+        });
+    }
+
+    function DeleteData(category_id) {
+        swal({
+            title: "Confirmation",
+            text: "Are you sure you want to delete this data?",
+            icon: "warning",
+            buttons: ["No", "Yes"],
+            dangerMode: true
+        }).then(function(isDelete){
+            if(isDelete){
+                $.post('@Url.Action("Delete")', { category_id: category_id }, function(status){
+                    if(status == 'success'){
+                        swal("Deleted!", "Category has been deleted.", "success");
+                        reloadTable();
+                    } else {
+                        swal("Failed!", "Failed to delete: " + status, "error");
+                    }
+                });
+            } else {
+                swal("Cancelled", "Category deletion cancelled.", "info");
+            }
+        });
+    }
+
+    $('#saveForm').submit(function(e){
+        e.preventDefault();
+        var formData = {
+            category_id: $('#category_id').val(),
+            name: $('#name').val(),
+            description: $('#description').val(),
+        };
+
+        swal({
+            title: "Save category?",
+            text: "Are you sure you want to save this category?",
+            icon: "info",
+            buttons: ["No", "Yes"]
+        }).then(function(isSave){
+            if(isSave){
+                $.post('@Url.Action("Store")', formData, function(status){
+                    if(status == 'success'){
+                        $('#dataModal').modal('hide');
+                        swal("Saved!", "Category saved successfully.", "success");
+                        reloadTable();
+                    } else {
+                        swal("Failed!", "Failed to save: " + status, "error");
+                    }
+                });
+            } else {
+                swal("Cancelled", "Save action cancelled.", "info");
+            }
+        });
+    });
+</script>

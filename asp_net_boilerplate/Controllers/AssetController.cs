@@ -9,7 +9,7 @@ using asp_net_boilerplate.Provider;
 
 namespace asp_net_boilerplate.Controllers
 {
-    public class AssetController : Controller
+    public class AssetController : BaseController
     {
         public string entity_id_global = "wk0008";
 

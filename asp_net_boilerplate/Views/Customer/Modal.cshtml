@@ -1,0 +1,40 @@
+﻿<div class="modal" id="dataModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form id="saveForm" method="POST">
+            <input type="hidden" id="customer_id" name="customer_id" />
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5><strong id="modalTitle">Add / Edit Customer</strong></h5>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped">
+                        <tr>
+                            <td>Name</td>
+                            <td><input type="text" id="name" name="name" required style="width:100%;" /></td>
+                        </tr>
+                        <tr>
+                            <td>Address</td>
+                            <td><textarea id="address" name="address" rows="3" required style="width:100%; font-size:16px;"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td>Telephone</td>
+                            <td><input type="text" id="telephone" name="telephone" required style="width:100%;" /></td>
+                        </tr>
+                        <tr>
+                            <td>Handphone</td>
+                            <td><input type="text" id="handphone" name="handphone" required style="width:100%;" /></td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td><input type="email" id="email" name="email" required style="width:100%;" /></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

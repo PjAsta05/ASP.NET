@@ -1,41 +1,124 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>@ViewBag.Title - My Bengkel</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("page_style", required: false)
+
+    <style>
+        body {
+            padding-top: 50px;
+            margin: 0;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 50px;
+            left: 0;
+            width: 220px;
+            height: calc(100vh - 50px);
+            background-color: #f8f8f8;
+            border-right: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+            .sidebar .menu-bottom {
+                margin-bottom: 15px;
+            }
+
+            .sidebar a {
+                display: block;
+                padding: 10px 15px;
+                color: #333;
+                text-decoration: none;
+            }
+
+                .sidebar a:hover,
+                .sidebar .active {
+                    background: #337ab7;
+                    color: #fff;
+                }
+
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+        }
+
+        footer {
+            padding: 10px 20px;
+            border-top: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
 </head>
-@RenderSection("page_style_inline", required: false)
+
 <body>
+    <!-- Navbar -->
     <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
+        <div class="container-fluid">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <a class="navbar-brand" href="#">My Bengkel . greatest bengkel in town</a>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li>@Html.ActionLink("Asset", "Index", "Asset")</li>
-                </ul>
-            </div>
+            <p class="navbar-text navbar-right" style="margin-right:15px;">
+                Good Morning, @Session["Name"]
+            </p>
         </div>
     </div>
-    <div class="container body-content">
-        <br />
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Menu atas -->
+        <div class="menu-top">
+            <a href="@Url.Action("Index","Dashboard")" class="@(currentController == "Dashboard" ? "active" : "")">
+                <span class="glyphicon glyphicon-dashboard"></span> Dashboard
+            </a>
+            <a href="@Url.Action("Index","Customer")" class="@(currentController == "Customer" ? "active" : "")">
+                <span class="glyphicon glyphicon-user"></span> Master Customer
+            </a>
+            <a href="@Url.Action("Index","Category")" class="@(currentController == "Category" ? "active" : "")"> 
+                <span class="glyphicon glyphicon-tags"></span> Master Category
+            </a>
+            <a href="@Url.Action("Index","SubCategory")" class="@(currentController == "SubCategory" ? "active" : "")">
+                <span class="glyphicon glyphicon-list"></span> Master Sub Category
+            </a>
+            <a href="@Url.Action("Index","Service")" class="@(currentController == "Service" ? "active" : "")">
+                <span class="glyphicon glyphicon-wrench"></span> Master Service Type
+            </a>
+            <a href="@Url.Action("Index","Stock")" class="@(currentController == "Stock" ? "active" : "")">
+                <span class="glyphicon glyphicon-briefcase"></span> Master Stock
+            </a>
+            <a href="@Url.Action("Index","Transaction")" class="@(currentController == "Transaction" ? "active" : "")">
+                <span class="glyphicon glyphicon-transfer"></span> Transaction Sales
+            </a>
+        </div>
+
+        <!-- Menu bawah -->
+        <div class="menu-bottom">
+            <a href="@Url.Action("Index","User")" class="@(currentController == "User" ? "active" : "")">
+                <span class="glyphicon glyphicon-lock"></span> Master User
+            </a>
+            <a href="@Url.Action("Logout", "Login")"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
         @RenderBody()
-        <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p class="small" style="margin:0;">Proudly created by Kadek Puja Astawa</p>
+            <p style="margin:0;">&copy; @DateTime.Now.Year - All rights reserved</p>
         </footer>
     </div>
 

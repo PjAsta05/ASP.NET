@@ -7,3 +7,4 @@ asp_net_boilerplate/Upload/*
 asp_net_boilerplate/assets/image/svg/static/TEJ
 packages/*
 .suo
+.vs/

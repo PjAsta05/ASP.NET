@@ -1,0 +1,130 @@
+﻿<script>
+    $(document).ready(function () {
+        initTable();
+    });
+
+    function initTable() {
+         var table = $('#customerTable').DataTable({
+             "processing": true,
+             "serverSide": true,
+             "bDestroy": true,
+             "orderMulti": false,
+             "pageLength": 10,
+             "bInfo": true,
+             "lengthChange": true,
+             "searching": true,
+             "ajax": {
+                 "url": "@Url.Action("LoadCustomer")",
+                 "type": "POST",
+             },
+             "columns": [
+                 { render: function (data, type, row, meta) { return meta.row + 1; }, orderable: false },
+                 { data: "name", orderable: false },
+                 { data: "address", orderable: false },
+                 { data: "telephone", orderable: false },
+                 { data: "action", orderable: false }
+             ],
+         });
+    };
+
+    function reloadTable() {
+        $('#customerTable').DataTable().ajax.reload(null, false);
+    }
+
+    function ShowData(customer_id){
+        $.get('@Url.Action("Get")', { customer_id: customer_id }, function(data){
+            var tbody = $('#detailTable tbody');
+            tbody.empty();
+
+            var index = 1;
+            for(var key in data){
+                if (key !== "customer_id" && key !== "action") {
+                    let displayKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    tbody.append('<tr>' +
+                        '<td>' + displayKey + '</td>' +
+                        '<td>' + data[key] + '</td>' +
+                        '</tr>');
+                }
+            }
+
+            $('#showModal').modal('show');
+        });
+    }
+
+
+    function AddData() {
+        $('#modalTitle').text("Add Customer");
+        $('#dataModal').modal('show');
+        $('#saveForm')[0].reset();
+        $('#customer_id').val('');
+    }
+
+    function EditData(customer_id) {
+        $.get('@Url.Action("Get")', { customer_id: customer_id }, function(data) {
+            $('#customer_id').val(data.customer_id);
+            $('#name').val(data.name);
+            $('#address').val(data.address);
+            $('#telephone').val(data.telephone);
+            $('#handphone').val(data.handphone);
+            $('#email').val(data.email);
+            $('#modalTitle').text("Edit Customer");
+            $('#dataModal').modal('show');
+        });
+    }
+
+    function DeleteData(customer_id) {
+        swal({
+            title: "Confirmation",
+            text: "Are you sure you want to delete this data?",
+            icon: "warning",
+            buttons: ["No", "Yes"],
+            dangerMode: true
+        }).then(function(isDelete){
+            if(isDelete){
+                $.post('@Url.Action("Delete")', { customer_id: customer_id }, function(status){
+                    if(status == 'success'){
+                        swal("Deleted!", "Customer has been deleted.", "success");
+                        reloadTable();
+                    } else {
+                        swal("Failed!", "Failed to delete: " + status, "error");
+                    }
+                });
+            } else {
+                swal("Cancelled", "Customer deletion cancelled.", "info");
+            }
+        });
+    }
+
+    $('#saveForm').submit(function(e){
+        e.preventDefault();
+        var formData = {
+            customer_id: $('#customer_id').val(),
+            name: $('#name').val(),
+            address: $('#address').val(),
+            telephone: $('#telephone').val(),
+            handphone: $('#handphone').val(),
+            email: $('#email').val()
+        };
+
+        swal({
+            title: "Save customer?",
+            text: "Are you sure you want to save this customer?",
+            icon: "info",
+            buttons: ["No", "Yes"]
+        }).then(function(isSave){
+            if(isSave){
+                $.post('@Url.Action("Store")', formData, function(status){
+                    if(status == 'success'){
+                        $('#dataModal').modal('hide');
+                        swal("Saved!", "Customer saved successfully.", "success");
+                        reloadTable();
+                    } else {
+                        swal("Failed!", "Failed to save: " + status, "error");
+                    }
+                });
+            } else {
+                swal("Cancelled", "Save action cancelled.", "info");
+            }
+        });
+    });
+</script>

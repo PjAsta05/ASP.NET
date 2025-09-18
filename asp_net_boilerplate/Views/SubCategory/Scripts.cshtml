@@ -1,0 +1,149 @@
+﻿<script>
+    $(document).ready(function () {
+        initTable();
+    });
+
+    function initTable() {
+        var table = $('#subCategoryTable').DataTable({
+             "processing": true,
+             "serverSide": true,
+             "bDestroy": true,
+             "orderMulti": false,
+             "pageLength": 10,
+             "bInfo": true,
+             "lengthChange": true,
+             "searching": true,
+             "ajax": {
+                 "url": "@Url.Action("LoadSubCategory")",
+                 "type": "POST",
+             },
+             "columns": [
+                 { render: function (data, type, row, meta) { return meta.row + 1; }, orderable: false },
+                 { data: "category_name", orderable: false },
+                 { data: "sub_category_name", orderable: false },
+                 { data: "description", orderable: false },
+                 { data: "action", orderable: false }
+             ],
+         });
+    };
+
+    function reloadTable() {
+        $('#subCategoryTable').DataTable().ajax.reload(null, false);
+    }
+
+    function loadCategories(selectedId = null, callback) {
+        $.get('@Url.Action("GetAllCategory", "SubCategory")', function(data) {
+            var $ddl = $('#category_id');
+            $ddl.empty();
+            $ddl.append('<option value="" disabled>-- Select Category --</option>');
+            $.each(data, function(i, item) {
+                $ddl.append('<option value="' + item.category_id + '">' + item.name + '</option>');
+            });
+            if(selectedId) $ddl.val(selectedId);
+            if(callback) callback();
+        })
+    }
+
+
+    function ShowData(sub_category_id){
+        $.get('@Url.Action("Get")', { sub_category_id: sub_category_id }, function(data){
+            var tbody = $('#detailTable tbody');
+            tbody.empty();
+
+            var index = 1;
+            for(var key in data){
+                if (key !== "sub_category_id" && key !== "category_id" && key !== "action") {
+                    let displayKey = key;
+                    if (key === "sub_category_id") {
+                        displayKey = "Sub Category";
+                    } else if (key === "category_id") {
+                        displayKey = "Category";
+                    } else {
+                        displayKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    }
+                    tbody.append('<tr>' +
+                        '<td>' + displayKey + '</td>' +
+                        '<td>' + data[key] + '</td>' +
+                        '</tr>');
+                }
+            }
+
+            $('#showModal').modal('show');
+        });
+    }
+
+    function AddData() {
+        $('#modalTitle').text("Add Sub Category");
+        $('#saveForm')[0].reset();
+        $('#sub_category_id').val(data.sub_category_id);
+        loadCategories(null, function () {
+            $('#dataModal').modal('show');
+        });
+    }
+
+    function EditData(sub_category_id) {
+        $.get('@Url.Action("Get", "SubCategory")', { sub_category_id: sub_category_id }, function(data) {
+            loadCategories(data.category_id, function() {
+                $('#sub_category_id').val(data.sub_category_id);
+                $('#name').val(data.sub_category_name);
+                $('#description').val(data.description);
+                $('#modalTitle').text("Edit Sub Category");
+                $('#dataModal').modal('show');
+            });
+        });
+    }
+
+    function DeleteData(sub_category_id) {
+        swal({
+            title: "Confirmation",
+            text: "Are you sure you want to delete this data?",
+            icon: "warning",
+            buttons: ["No", "Yes"],
+            dangerMode: true
+        }).then(function(isDelete){
+            if(isDelete){
+                $.post('@Url.Action("Delete")', { sub_category_id: sub_category_id }, function(status){
+                    if(status == 'success'){
+                        swal("Deleted!", "Sub Category has been deleted.", "success");
+                        reloadTable();
+                    } else {
+                        swal("Failed!", "Failed to delete: " + status, "error");
+                    }
+                });
+            } else {
+                swal("Cancelled", "Category deletion cancelled.", "info");
+            }
+        });
+    }
+
+    $('#saveForm').submit(function(e){
+        e.preventDefault();
+        var formData = {
+            sub_category_id: $('#sub_category_id').val(),
+            category_id: $('#category_id').val(),
+            sub_category_name: $('#name').val(),
+            description: $('#description').val(),
+        };
+
+        swal({
+            title: "Save sub category?",
+            text: "Are you sure you want to save this sub category?",
+            icon: "info",
+            buttons: ["No", "Yes"]
+        }).then(function(isSave){
+            if(isSave){
+                $.post('@Url.Action("Store")', formData, function(status){
+                    if(status == 'success'){
+                        $('#dataModal').modal('hide');
+                        swal("Saved!", "Sub category saved successfully.", "success");
+                        reloadTable();
+                    } else {
+                        swal("Failed!", "Failed to save: " + status, "error");
+                    }
+                });
+            } else {
+                swal("Cancelled", "Save action cancelled.", "info");
+            }
+        });
+    });
+</script>

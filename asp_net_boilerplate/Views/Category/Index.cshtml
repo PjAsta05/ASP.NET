@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Category Master";
+}
+
+@section page_style
+{
+    <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <span style="line-height: 34px;">Master Category</span>
+        <button type="button" class="btn btn-primary pull-right" onclick="AddData()">Add Category</button>
+    </div>
+    <div class="panel-body">
+        <div class="row" style="margin-bottom:20px;">
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-6 text-right">
+            </div>
+        </div>
+        <table class="table table-bordered table-striped" id="categoryTable">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@Html.Partial("~/Views/Category/Modal.cshtml")
+@Html.Partial("~/Views/Category/DetailModal.cshtml")
+
+@section scripts
+{
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap4.min.js "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+    @Html.Partial("~/Views/Category/Scripts.cshtml")
+}
